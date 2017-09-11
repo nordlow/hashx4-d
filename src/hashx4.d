@@ -1,5 +1,6 @@
-eodule hashx4;
+module bhashx4;
 
+// See also: http://forum.dlang.org/post/slkijfrqmhnlaayxtyif@forum.dlang.org
 extern(C)
 {
     int hx4_djbx33a_32_ref     (const void *in_, size_t in_sz,
@@ -42,5 +43,4 @@ extern(C)
 
 @safe pure nothrow @nogc unittest
 {
-
 }
