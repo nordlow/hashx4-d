@@ -63,6 +63,7 @@ unittest
     const ret = hx4_x4djbx33a_128_ssse3(in_.ptr, in_.length,
                                         cookie.ptr, cookie.length,
                                         out_.ptr, out_.length);
+
     writeln(`ret:`, ret);
     writeln(`out_:`, out_);
 }
