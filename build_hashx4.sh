@@ -13,5 +13,5 @@ if [ ! -f "${HASHX4_BUILD_DIR}/CMakeFiles/testhx4.dir/src/hx4_djbx33a.c.o" ]; th
         -DCMAKE_CC_COMPILER=/usr/bin/gcc-7 \
         -DCMAKE_CXX_COMPILER=/usr/bin/g++-7 \
         -DCMAKE_BUILD_TYPE=Release .
-    make src/hx4_djbx33a.o
+    make
 fi
