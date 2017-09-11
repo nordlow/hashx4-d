@@ -7,3 +7,5 @@ license "BSL-1.0"
 copyright "Per Nordlöw"
 
 dflags "-vcolumns" "-dip25" "-dip1000"
+
+sourcePaths "src"
