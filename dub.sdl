@@ -6,11 +6,12 @@ authors "Per Nordlöw"
 license "BSL-1.0"
 copyright "Per Nordlöw"
 
+sourcePaths "src"
+
 dflags "-vcolumns" "-dip25" "-dip1000"
+
+preBuildCommands "./build_hashx4.sh"
 lflags "hashx4/CMakeFiles/testhx4.dir/src/hx4_djbx33a.c.o"
 lflags "hashx4/CMakeFiles/testhx4.dir/src/hx4_siphash24.c.o"
 lflags "hashx4/CMakeFiles/testhx4.dir/src/siphash24.c.o"
 lflags "hashx4/CMakeFiles/testhx4.dir/src/hx4_util.c.o"
-
-preBuildCommands "./build_hashx4.sh"
-sourcePaths "src"
