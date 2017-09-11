@@ -1,0 +1,9 @@
+name "hashx4-d"
+targetType "library"
+description "High-level wrapper hashx4"
+
+authors "Per Nordlöw"
+license "BSL-1.0"
+copyright "Per Nordlöw"
+
+dflags "-vcolumns" "-dip25" "-dip1000"
