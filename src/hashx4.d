@@ -59,16 +59,17 @@ extern(C)
     }
 }
 
-version = show;
+// version = show;
+
+enum cookie_nbits = 128;
 
 ///
 unittest
 {
-
     const nbits = 128;
 
     const ubyte[nbits/8] in_ = 42;
-    const ubyte[nbits/8] cookie = 10;
+    const ubyte[cookie_nbits/8] cookie = 10;
 
     version(show) writeln(`in_:`, in_);
     version(show) writeln(`cookie`, cookie);
@@ -132,19 +133,19 @@ unittest
     const nbits = 64;
 
     const ubyte[nbits/8] in_ = 42;
-    const ubyte[nbits/8] cookie = 10;
+    const ubyte[cookie_nbits/8] cookie = 10;
 
     ubyte[nbits/8] out_ref;
-    const ret_ref = hx4_siphash24_64_ref(in_.ptr, in_.length,
-                                         cookie.ptr, cookie.length,
-                                         out_ref.ptr, out_ref.length);
-    version(show) writeln(`out_ref:`, out_ref, ` returned: `, ret_ref);
+    assert(hx4_siphash24_64_ref(in_.ptr, in_.length,
+                                cookie.ptr, cookie.length,
+                                out_ref.ptr, out_ref.length) == 0);
+    version(show) writeln(`out_ref:`, out_ref);
 
     ubyte[nbits/8] out_copt;
-    const ret_copt = hx4_siphash24_64_copt(in_.ptr, in_.length,
-                                           cookie.ptr, cookie.length,
-                                           out_copt.ptr, out_copt.length);
-    version(show) writeln(`out_copt:`, out_copt, ` returned: `, ret_copt);
+    assert(hx4_siphash24_64_copt(in_.ptr, in_.length,
+                                 cookie.ptr, cookie.length,
+                                 out_copt.ptr, out_copt.length) == 0);
+    version(show) writeln(`out_copt:`, out_copt);
     assert(out_ref == out_copt);
 }
 
