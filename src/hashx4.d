@@ -58,7 +58,7 @@ extern(C)
                                     scope ubyte *out_, size_t out_sz);
     }
 
-    /** SipHash.
+    /** SipHash 24.
         See also: https://131002.net/siphash/
      */
 
