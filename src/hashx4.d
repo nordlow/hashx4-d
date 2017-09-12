@@ -63,7 +63,7 @@ extern(C)
 
 enum cookie_nbits = 128;
 
-///
+/// DJBX33A
 unittest
 {
     const nbits = 128;
@@ -127,7 +127,7 @@ extern(C)
                                 scope ubyte *out_, size_t out_sz);
 }
 
-///
+/// SipHash 24
 unittest
 {
     const nbits = 64;
