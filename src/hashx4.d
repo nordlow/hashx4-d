@@ -63,45 +63,46 @@ extern(C)
                                 scope ubyte *out_, size_t out_sz);
 }
 
+// version = show;
+
 ///
 unittest
 {
-    import std.stdio : writeln;
 
     const nbits = 128;
 
     const ubyte[nbits/8] in_ = 42;
     const ubyte[nbits/8] cookie = 10;
 
-    writeln(`in_:`, in_);
-    writeln(`cookie`, cookie);
+    version(show) writeln(`in_:`, in_);
+    version(show) writeln(`cookie`, cookie);
 
     ubyte[nbits/8] out_ref;
     assert(hx4_x4djbx33a_128_ref(in_.ptr, in_.length,
                                  cookie.ptr, cookie.length,
                                  out_ref.ptr, out_ref.length) == 0);
-    writeln(`out_ref: `, out_ref);
+    version(show) writeln(`out_ref: `, out_ref);
 
     ubyte[nbits/8] out_copt;
     assert(hx4_x4djbx33a_128_copt(in_.ptr, in_.length,
                                   cookie.ptr, cookie.length,
                                   out_copt.ptr, out_copt.length) == 0);
     assert(out_ref == out_copt);
-    writeln(`out_opt: `, out_copt);
+    version(show) writeln(`out_opt: `, out_copt);
 
     ubyte[nbits/8] out_mmx;
     assert(hx4_x4djbx33a_128_mmx(in_.ptr, in_.length,
                                  cookie.ptr, cookie.length,
                                  out_mmx.ptr, out_mmx.length) == 0);
     assert(out_ref == out_mmx);
-    writeln(`out_mmx: `, out_mmx);
+    version(show) writeln(`out_mmx: `, out_mmx);
 
     ubyte[nbits/8] out_sse2;
     assert(hx4_x4djbx33a_128_sse2(in_.ptr, in_.length,
                                   cookie.ptr, cookie.length,
                                   out_sse2.ptr, out_sse2.length) == 0);
     assert(out_ref == out_sse2);
-    writeln(`out_sse2:`, out_sse2);
+    version(show) writeln(`out_sse2:`, out_sse2);
 
     ubyte[nbits/8] out_sse3;
     assert(hx4_x4djbx33a_128_ssse3(in_.ptr, in_.length,
@@ -109,5 +110,10 @@ unittest
                                    out_sse3.ptr, out_sse3.length) == 0);
     assert(out_ref == out_sse3);
 
-    writeln(`out_sse3:`, out_sse3);
+    version(show) writeln(`out_sse3:`, out_sse3);
+}
+
+version(show)
+{
+    import std.stdio : writeln;
 }
