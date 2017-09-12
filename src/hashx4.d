@@ -2,7 +2,8 @@
 
     Provides wrappers for C implementations of :
 
-    - DJBX33A hash function by Daniel Bernstein (h_i+1 = h_i * 33 + c_i+1, h_0 = 5381)
+    - SipHash
+    - DJBX33A: by Daniel Bernstein (h_i+1 = h_i * 33 + c_i+1, h_0 = 5381)
  */
 module bhashx4;
 
@@ -13,6 +14,9 @@ version = HX4_HAS_SSE3;
 // See also: http://forum.dlang.org/post/slkijfrqmhnlaayxtyif@forum.dlang.org
 extern(C)
 {
+    /** DJBX33A 32-bit.
+     */
+
     int hx4_djbx33a_32_ref     (in ubyte *in_, size_t in_sz,
                                 in ubyte *cookie, size_t cookie_sz,
                                 scope ubyte *out_, size_t out_sz);
@@ -20,15 +24,15 @@ extern(C)
                                 in ubyte *cookie, size_t cookie_sz,
                                 scope ubyte *out_, size_t out_sz);
 
-    /** DJBX33A
+    /** DJBX33A 128-bit.
      */
 
-    /// reference implementation
+    // reference
     int hx4_x4djbx33a_128_ref  (in ubyte *in_, size_t in_sz,
                                 in ubyte *cookie, size_t cookie_sz,
                                 scope ubyte *out_, size_t out_sz);
 
-    /// optimized implementation
+    // optimized
     int hx4_x4djbx33a_128_copt (in ubyte *in_, size_t in_sz,
                                 in ubyte *cookie, size_t cookie_sz,
                                 scope ubyte *out_, size_t out_sz);
@@ -54,10 +58,15 @@ extern(C)
                                     scope ubyte *out_, size_t out_sz);
     }
 
+    /** SipHash.
+     */
+
+    // reference
     int hx4_siphash24_64_ref   (in ubyte *in_, size_t in_sz,
                                 in ubyte *cookie, size_t cookie_sz,
                                 scope ubyte *out_, size_t out_sz);
 
+    // optimized
     int hx4_siphash24_64_copt  (in ubyte *in_, size_t in_sz,
                                 in ubyte *cookie, size_t cookie_sz,
                                 scope ubyte *out_, size_t out_sz);
