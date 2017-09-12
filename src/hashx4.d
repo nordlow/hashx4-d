@@ -7,6 +7,35 @@
  */
 module bhashx4;
 
+// TODO implement
+struct SipHash24
+{
+    @trusted:
+
+    void put(scope const(ubyte)[] data...)
+    {
+    }
+
+    void start()
+    {
+    }
+
+    ubyte[16] finish()
+    {
+        return typeof(return).init;
+    }
+}
+
+ubyte[8] gethash_SipHash24_64(scope const(ubyte)[] data...)
+{
+    typeof(return) sum;
+    const ubyte[cookie_nbits/8] cookie = 10;
+    hx4_siphash24_64_copt(data.ptr, data.length,
+                          cookie.ptr, cookie.length,
+                          sum.ptr, sum.length);
+    return sum;
+}
+
 version = HX4_HAS_MMX;
 version = HX4_HAS_SSE2;
 version = HX4_HAS_SSE3;
@@ -17,45 +46,45 @@ extern(C)
     /** DJBX33A 32-bit.
      */
 
-    int hx4_djbx33a_32_ref     (in ubyte *in_, size_t in_sz,
+    int hx4_djbx33a_32_ref     (in ubyte *data_ptr, size_t data_sz,
                                 in ubyte *cookie, size_t cookie_sz,
-                                scope ubyte *out_, size_t out_sz);
-    int hx4_djbx33a_32_copt    (in ubyte *in_, size_t in_sz,
+                                scope ubyte *sum, size_t sum_sz);
+    int hx4_djbx33a_32_copt    (in ubyte *data_ptr, size_t data_sz,
                                 in ubyte *cookie, size_t cookie_sz,
-                                scope ubyte *out_, size_t out_sz);
+                                scope ubyte *sum, size_t sum_sz);
 
     /** DJBX33A 128-bit.
      */
 
     // reference
-    int hx4_x4djbx33a_128_ref  (in ubyte *in_, size_t in_sz,
+    int hx4_x4djbx33a_128_ref  (in ubyte *data_ptr, size_t data_sz,
                                 in ubyte *cookie, size_t cookie_sz,
-                                scope ubyte *out_, size_t out_sz);
+                                scope ubyte *sum, size_t sum_sz);
 
     // optimized
-    int hx4_x4djbx33a_128_copt (in ubyte *in_, size_t in_sz,
+    int hx4_x4djbx33a_128_copt (in ubyte *data_ptr, size_t data_sz,
                                 in ubyte *cookie, size_t cookie_sz,
-                                scope ubyte *out_, size_t out_sz);
+                                scope ubyte *sum, size_t sum_sz);
 
     version(HX4_HAS_MMX)
     {
-        int hx4_x4djbx33a_128_mmx  (in ubyte *in_, size_t in_sz,
+        int hx4_x4djbx33a_128_mmx  (in ubyte *data_ptr, size_t data_sz,
                                     in ubyte *cookie, size_t cookie_sz,
-                                    scope ubyte *out_, size_t out_sz);
+                                    scope ubyte *sum, size_t sum_sz);
     }
 
     version(HX4_HAS_SSE2)
     {
-        int hx4_x4djbx33a_128_sse2 (in ubyte *in_, size_t in_sz,
+        int hx4_x4djbx33a_128_sse2 (in ubyte *data_ptr, size_t data_sz,
                                     in ubyte *cookie, size_t cookie_sz,
-                                    scope ubyte *out_, size_t out_sz);
+                                    scope ubyte *sum, size_t sum_sz);
     }
 
     version(HX4_HAS_SSE3)
     {
-        int hx4_x4djbx33a_128_ssse3(in ubyte *in_, size_t in_sz,
+        int hx4_x4djbx33a_128_ssse3(in ubyte *data_ptr, size_t data_sz,
                                     in ubyte *cookie, size_t cookie_sz,
-                                    scope ubyte *out_, size_t out_sz);
+                                    scope ubyte *sum, size_t sum_sz);
     }
 }
 
@@ -68,46 +97,46 @@ unittest
 {
     const nbits = 128;
 
-    const ubyte[nbits/8] in_ = 42;
+    const ubyte[nbits/8] data = 42;
     const ubyte[cookie_nbits/8] cookie = 10;
 
-    version(show) writeln(`in_:`, in_);
+    version(show) writeln(`data:`, data);
     version(show) writeln(`cookie`, cookie);
 
-    ubyte[nbits/8] out_ref;
-    assert(hx4_x4djbx33a_128_ref(in_.ptr, in_.length,
+    ubyte[nbits/8] sum_ref;
+    assert(hx4_x4djbx33a_128_ref(data.ptr, data.length,
                                  cookie.ptr, cookie.length,
-                                 out_ref.ptr, out_ref.length) == 0);
-    version(show) writeln(`out_ref: `, out_ref);
+                                 sum_ref.ptr, sum_ref.length) == 0);
+    version(show) writeln(`sum_ref: `, sum_ref);
 
-    ubyte[nbits/8] out_copt;
-    assert(hx4_x4djbx33a_128_copt(in_.ptr, in_.length,
+    ubyte[nbits/8] sum_copt;
+    assert(hx4_x4djbx33a_128_copt(data.ptr, data.length,
                                   cookie.ptr, cookie.length,
-                                  out_copt.ptr, out_copt.length) == 0);
-    assert(out_ref == out_copt);
-    version(show) writeln(`out_copt: `, out_copt);
+                                  sum_copt.ptr, sum_copt.length) == 0);
+    assert(sum_ref == sum_copt);
+    version(show) writeln(`sum_copt: `, sum_copt);
 
-    ubyte[nbits/8] out_mmx;
-    assert(hx4_x4djbx33a_128_mmx(in_.ptr, in_.length,
+    ubyte[nbits/8] sum_mmx;
+    assert(hx4_x4djbx33a_128_mmx(data.ptr, data.length,
                                  cookie.ptr, cookie.length,
-                                 out_mmx.ptr, out_mmx.length) == 0);
-    assert(out_ref == out_mmx);
-    version(show) writeln(`out_mmx: `, out_mmx);
+                                 sum_mmx.ptr, sum_mmx.length) == 0);
+    assert(sum_ref == sum_mmx);
+    version(show) writeln(`sum_mmx: `, sum_mmx);
 
-    ubyte[nbits/8] out_sse2;
-    assert(hx4_x4djbx33a_128_sse2(in_.ptr, in_.length,
+    ubyte[nbits/8] sum_sse2;
+    assert(hx4_x4djbx33a_128_sse2(data.ptr, data.length,
                                   cookie.ptr, cookie.length,
-                                  out_sse2.ptr, out_sse2.length) == 0);
-    assert(out_ref == out_sse2);
-    version(show) writeln(`out_sse2:`, out_sse2);
+                                  sum_sse2.ptr, sum_sse2.length) == 0);
+    assert(sum_ref == sum_sse2);
+    version(show) writeln(`sum_sse2:`, sum_sse2);
 
-    ubyte[nbits/8] out_sse3;
-    assert(hx4_x4djbx33a_128_ssse3(in_.ptr, in_.length,
+    ubyte[nbits/8] sum_sse3;
+    assert(hx4_x4djbx33a_128_ssse3(data.ptr, data.length,
                                    cookie.ptr, cookie.length,
-                                   out_sse3.ptr, out_sse3.length) == 0);
-    assert(out_ref == out_sse3);
+                                   sum_sse3.ptr, sum_sse3.length) == 0);
+    assert(sum_ref == sum_sse3);
 
-    version(show) writeln(`out_sse3:`, out_sse3);
+    version(show) writeln(`sum_sse3:`, sum_sse3);
 }
 
 extern(C)
@@ -117,36 +146,36 @@ extern(C)
      */
 
     // reference
-    int hx4_siphash24_64_ref   (in ubyte *in_, size_t in_sz,
-                                in ubyte *cookie, size_t cookie_sz,
-                                scope ubyte *out_, size_t out_sz);
+    int hx4_siphash24_64_ref(in ubyte *data_ptr, size_t data_sz,
+                             in ubyte *cookie, size_t cookie_sz,
+                             scope ubyte *sum, size_t sum_sz);
 
     // optimized
-    int hx4_siphash24_64_copt  (in ubyte *in_, size_t in_sz,
-                                in ubyte *cookie, size_t cookie_sz,
-                                scope ubyte *out_, size_t out_sz);
+    int hx4_siphash24_64_copt(in ubyte *data_ptr, size_t data_sz,
+                              in ubyte *cookie, size_t cookie_sz,
+                              scope ubyte *sum, size_t sum_sz);
 }
 
 /// SipHash 24
 unittest
 {
-    const nbits = 64;
+    const siphash_nbits = 64;
 
-    const ubyte[nbits/8] in_ = 42;
+    const ubyte[siphash_nbits/8] data = 42;
     const ubyte[cookie_nbits/8] cookie = 10;
 
-    ubyte[nbits/8] out_ref;
-    assert(hx4_siphash24_64_ref(in_.ptr, in_.length,
+    ubyte[siphash_nbits/8] sum_ref;
+    assert(hx4_siphash24_64_ref(data.ptr, data.length,
                                 cookie.ptr, cookie.length,
-                                out_ref.ptr, out_ref.length) == 0);
-    version(show) writeln(`out_ref:`, out_ref);
+                                sum_ref.ptr, sum_ref.length) == 0);
+    version(show) writeln(`sum_ref:`, sum_ref);
 
-    ubyte[nbits/8] out_copt;
-    assert(hx4_siphash24_64_copt(in_.ptr, in_.length,
+    ubyte[siphash_nbits/8] sum_copt;
+    assert(hx4_siphash24_64_copt(data.ptr, data.length,
                                  cookie.ptr, cookie.length,
-                                 out_copt.ptr, out_copt.length) == 0);
-    version(show) writeln(`out_copt:`, out_copt);
-    assert(out_ref == out_copt);
+                                 sum_copt.ptr, sum_copt.length) == 0);
+    version(show) writeln(`sum_copt:`, sum_copt);
+    assert(sum_ref == sum_copt);
 }
 
 version(show)
