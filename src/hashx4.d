@@ -59,6 +59,7 @@ extern(C)
     }
 
     /** SipHash.
+        See also: https://131002.net/siphash/
      */
 
     // reference
