@@ -1,3 +1,6 @@
 [submodule "hashx4"]
 	path = hashx4
 	url = https://github.com/cleeus/hashx4
+[submodule "siphash-avx2"]
+	path = siphash-avx2
+	url = https://github.com/jedisct1/siphash-avx2.git

@@ -57,23 +57,9 @@ extern(C)
                                     in ubyte *cookie, size_t cookie_sz,
                                     scope ubyte *out_, size_t out_sz);
     }
-
-    /** SipHash 24.
-        See also: https://131002.net/siphash/
-     */
-
-    // reference
-    int hx4_siphash24_64_ref   (in ubyte *in_, size_t in_sz,
-                                in ubyte *cookie, size_t cookie_sz,
-                                scope ubyte *out_, size_t out_sz);
-
-    // optimized
-    int hx4_siphash24_64_copt  (in ubyte *in_, size_t in_sz,
-                                in ubyte *cookie, size_t cookie_sz,
-                                scope ubyte *out_, size_t out_sz);
 }
 
-// version = show;
+version = show;
 
 ///
 unittest
@@ -98,7 +84,7 @@ unittest
                                   cookie.ptr, cookie.length,
                                   out_copt.ptr, out_copt.length) == 0);
     assert(out_ref == out_copt);
-    version(show) writeln(`out_opt: `, out_copt);
+    version(show) writeln(`out_copt: `, out_copt);
 
     ubyte[nbits/8] out_mmx;
     assert(hx4_x4djbx33a_128_mmx(in_.ptr, in_.length,
@@ -121,6 +107,45 @@ unittest
     assert(out_ref == out_sse3);
 
     version(show) writeln(`out_sse3:`, out_sse3);
+}
+
+extern(C)
+{
+    /** SipHash 24.
+        See also: https://131002.net/siphash/
+     */
+
+    // reference
+    int hx4_siphash24_64_ref   (in ubyte *in_, size_t in_sz,
+                                in ubyte *cookie, size_t cookie_sz,
+                                scope ubyte *out_, size_t out_sz);
+
+    // optimized
+    int hx4_siphash24_64_copt  (in ubyte *in_, size_t in_sz,
+                                in ubyte *cookie, size_t cookie_sz,
+                                scope ubyte *out_, size_t out_sz);
+}
+
+///
+unittest
+{
+    const nbits = 64;
+
+    const ubyte[nbits/8] in_ = 42;
+    const ubyte[nbits/8] cookie = 10;
+
+    ubyte[nbits/8] out_ref;
+    const ret_ref = hx4_siphash24_64_ref(in_.ptr, in_.length,
+                                         cookie.ptr, cookie.length,
+                                         out_ref.ptr, out_ref.length);
+    version(show) writeln(`out_ref:`, out_ref, ` returned: `, ret_ref);
+
+    ubyte[nbits/8] out_copt;
+    const ret_copt = hx4_siphash24_64_copt(in_.ptr, in_.length,
+                                           cookie.ptr, cookie.length,
+                                           out_copt.ptr, out_copt.length);
+    version(show) writeln(`out_copt:`, out_copt, ` returned: `, ret_copt);
+    assert(out_ref == out_copt);
 }
 
 version(show)
