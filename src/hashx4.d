@@ -13,8 +13,6 @@ module bhashx4;
 // TODO implement
 struct SipHash24
 {
-    @trusted:
-
     void put(scope const(ubyte)[] data...)
     {
     }
