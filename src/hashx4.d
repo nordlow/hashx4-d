@@ -43,25 +43,22 @@ version = HX4_HAS_SSE3;
 // See also: http://forum.dlang.org/post/slkijfrqmhnlaayxtyif@forum.dlang.org
 extern(C)
 {
-    /** DJBX33A 32-bit.
-     */
-
+    /** DJBX33A 32-bit reference implementation. */
     int hx4_djbx33a_32_ref     (in ubyte *data_ptr, size_t data_sz,
                                 in ubyte *cookie, size_t cookie_sz,
                                 scope ubyte *sum, size_t sum_sz);
+
+    /** DJBX33A 32-bit optimized implementation. */
     int hx4_djbx33a_32_copt    (in ubyte *data_ptr, size_t data_sz,
                                 in ubyte *cookie, size_t cookie_sz,
                                 scope ubyte *sum, size_t sum_sz);
 
-    /** DJBX33A 128-bit.
-     */
-
-    // reference
+    /** DJBX33A 128-bit reference implementation. */
     int hx4_x4djbx33a_128_ref  (in ubyte *data_ptr, size_t data_sz,
                                 in ubyte *cookie, size_t cookie_sz,
                                 scope ubyte *sum, size_t sum_sz);
 
-    // optimized
+    /** DJBX33A 128-bit optimized implementation. */
     int hx4_x4djbx33a_128_copt (in ubyte *data_ptr, size_t data_sz,
                                 in ubyte *cookie, size_t cookie_sz,
                                 scope ubyte *sum, size_t sum_sz);
