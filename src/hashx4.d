@@ -138,16 +138,16 @@ unittest
 
 extern(C)
 {
-    /** SipHash 24.
+    /** SipHash 24 reference implementation.
         See also: https://131002.net/siphash/
      */
-
-    // reference
     int hx4_siphash24_64_ref(in ubyte *data_ptr, size_t data_sz,
                              in ubyte *cookie, size_t cookie_sz,
                              scope ubyte *sum, size_t sum_sz);
 
-    // optimized
+    /** SipHash 24 optimized implementation.
+        See also: https://131002.net/siphash/
+     */
     int hx4_siphash24_64_copt(in ubyte *data_ptr, size_t data_sz,
                               in ubyte *cookie, size_t cookie_sz,
                               scope ubyte *sum, size_t sum_sz);
