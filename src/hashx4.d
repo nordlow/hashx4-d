@@ -4,6 +4,9 @@
 
     - SipHash
     - DJBX33A: by Daniel Bernstein (h_i+1 = h_i * 33 + c_i+1, h_0 = 5381)
+
+    TODO reverse order of pointer and length to for better performance when
+    called from D wrappers.
  */
 module bhashx4;
 
